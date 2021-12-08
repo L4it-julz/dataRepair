@@ -85,12 +85,13 @@ function App() {
   return (
     <div className="App">
        <h1>Data Repair</h1>
-     <h2>Insert the Query Code:</h2>
+     <h2>Insert the (tbposhdr) Query Code:</h2>
      <TextArea value={query} onChange={changeHandle}/>
      <div>
        <label>Reference No:</label>
       <input type="text" value={enteredValue} onChange={e => setEnteredValue(e.target.value)} />
-        <button onClick={converted}>convert now!</button>
+        <button onClick={converted}>convert to Table!</button>
+        <button onClick={converted}>apply Reference Number!</button>
         
      </div>
      <TextArea value={convertedQuery}/>
