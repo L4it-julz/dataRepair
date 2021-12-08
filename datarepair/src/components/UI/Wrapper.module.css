@@ -1,0 +1,7 @@
+.main {
+    position: fixed;
+    height:500px;
+    width: 100%;
+    padding: 1em;
+    overflow-x: scroll;
+}

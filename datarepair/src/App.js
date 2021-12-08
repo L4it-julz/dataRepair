@@ -2,13 +2,17 @@ import React, {useState} from 'react';
 import './App.css';
 import Content from './components/Content';
 
-import { Table } from 'react-bootstrap';
+import { Table, Card } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import TextArea from './components/UI/TextArea';
+import Wrapper from './components/UI/Wrapper';
+
 
 function App() {
   const [query, setQuery] = useState('');
+  const [convertedQuery, setConvertedQuery] = useState('')
   const [datalist, setDatalist] = useState('');
+  let formatQuery = ''
 
   const [tableHeader, setTableHeader] = useState('');
   const [tableField, setTableField] = useState('');
@@ -50,7 +54,7 @@ function App() {
     let gettingDataRow = list.map(lt => lt.split(' values ('))
     let reomoveQRow = gettingDataRow.map(m => m[1].trim().split("'").join())
     let removeSemiColon = reomoveQRow.map(m => m.trim().split(");").join(''))
-    console.log('data1', )
+    console.log('data1', gettingDataRow)
     let reomoveCommaRow = gettingDataRow.map(m => m[1].replace(`);`,'').split(','))
 
     // setRows(rowsData);
@@ -63,15 +67,18 @@ function App() {
       return n[0]
     })
 
+    // let try2 = reomoveCommaRow && reomoveCommaRow.map( (n, index) => n[0] = try1 ? `'${try1[index].toString().padStart(10, "0")}'` : 0)
     let try2 = reomoveCommaRow && reomoveCommaRow.map( (n, index) => n[0] = try1 ? try1[index].toString().padStart(10, "0") : 0)
     let highestToLowest = reomoveCommaRow.sort((a, b) => b[0]-a[0]);
+    let convertToSring = highestToLowest.map(n => n[0] = `'${n[0]}'`)
     setRows(highestToLowest);
 
     console.log('data2', qryInsert)
   }
  
   const makeText = () => {
-    let textFormat = qryInsert + " values (" + rows.map( n => "'" + n + "'" + ",") + ");"
+    let textFormat =  rows && rows.map( n => qryInsert + " values ("+ n + ");\n" )
+    setConvertedQuery(textFormat.join(''))
     console.log('textformat:', textFormat)
   }
 
@@ -84,7 +91,11 @@ function App() {
        <label>Reference No:</label>
       <input type="text" value={enteredValue} onChange={e => setEnteredValue(e.target.value)} />
         <button onClick={converted}>convert now!</button>
-        <button onClick={makeText}>convert to text!</button>
+        
+     </div>
+     <TextArea value={convertedQuery}/>
+     <div>
+     <button onClick={makeText}>convert to text!</button>
      </div>
      <div>
        <header>
@@ -93,24 +104,25 @@ function App() {
      </div>
     <div style={{
       width: 500,
-      height: 200
     }}>
-    <Table striped bordered hover>
-          <thead>
-              <tr>
-                {tableField && tableField.map(n => <th>{n}</th>)}
-              </tr>
-          </thead>
-          <tbody>
-             
-                {rows && rows.map(n =>  
-                <tr key={Math.random()}>
-                  {n.map( item => <td>{item}</td>)}
+      <Wrapper>
+        <Table striped bordered hover>
+              <thead>
+                  <tr>
+                    {tableField && tableField.map(n => <th>{n}</th>)}
                   </tr>
-                  )}
-              
-          </tbody>
-        </Table>
+              </thead>
+              <tbody>
+                
+                    {rows && rows.map(n =>  
+                    <tr key={Math.random()}>
+                      {n.map( item => <td>{item}</td>)}
+                      </tr>
+                      )}
+                  
+              </tbody>
+            </Table>
+      </Wrapper>
     </div>
   </div>
   );

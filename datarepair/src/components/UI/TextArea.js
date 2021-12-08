@@ -6,7 +6,7 @@ const TextArea = (props) => {
     id="names"
     name="hard"
     value={props.value}
-    cols={150}
+    cols={130}
     rows={10}
     onChange={props.onChange}
     wrap="hard"
